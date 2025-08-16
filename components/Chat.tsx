@@ -14,9 +14,9 @@ const LANGUAGES = [
 ];
 
 const COUNTRIES = [
+  "Indonesia",
   "Singapore",
   "Malaysia",
-  "Indonesia",
   "Thailand",
   "Vietnam",
   "Philippines",
@@ -45,7 +45,7 @@ export default function Chat() {
   const endRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => endRef.current?.scrollIntoView({ behavior: "smooth" }), [messages, loading]);
 
-  // one unified button style (both "Generate" buttons use this)
+  // unified primary button style
   const primaryBtn =
     "px-4 py-2 rounded bg-blue-600 text-white disabled:opacity-50 focus:outline-none focus:ring-2 focus:ring-blue-400";
 
@@ -61,28 +61,37 @@ export default function Chat() {
     return data as { reply?: string };
   }
 
-  // left: send message
+  // left: send message (with explicit Msg typing to satisfy TS)
   async function send() {
     if (!input.trim()) return;
-    const next = [...messages, { role: "user", content: input }];
+
+    // ✅ Explicitly type the new message to avoid literal widening
+    const userMsg: Msg = { role: "user", content: input };
+    const next: Msg[] = [...messages, userMsg];
+
     setMessages(next);
     setInput("");
     setLoading(true);
     setError(null);
+
     try {
       const data = await postToAPI({ messages: next });
-      setMessages([...next, { role: "assistant", content: data.reply || "" }]);
+
+      // ✅ Explicitly type the assistant message too
+      const botMsg: Msg = { role: "assistant", content: data.reply || "" };
+      setMessages([...next, botMsg]);
     } catch (e: any) {
       setError(e.message || "Unknown error");
     } finally {
       setLoading(false);
     }
   }
+
   function onKey(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) send();
   }
 
-  // right: recommendations
+  // right: recommendations (same language)
   async function generateRecommendations() {
     if (!keywords.trim()) return;
     setReco("");
@@ -100,7 +109,7 @@ export default function Chat() {
               "3) Project ideas 4) Internship/job tips. " +
               "Keep it practical (6–12 bullet points) and SEA-aware.",
           },
-        ],
+        ] as Msg[], // ensure messages array satisfies the Msg shape
       });
       setReco(data.reply || "");
     } catch (e: any) {
@@ -133,7 +142,7 @@ export default function Chat() {
               "Respond in the user's selected language. " +
               "Organize by Week 1–4 with 3–4 actionable bullet points each, suitable for Southeast Asian learners.",
           },
-        ],
+        ] as Msg[],
       });
       setPlan(data.reply || "");
     } catch (e: any) {
@@ -147,7 +156,7 @@ export default function Chat() {
     <div className="max-w-6xl mx-auto">
       {/* title + selectors */}
       <div className="flex flex-col gap-3 mb-4">
-        <h1 className="text-2xl font-bold">SEA LION chatbot</h1>
+        <h1 className="text-2xl font-bold">LangPath Demo</h1>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">Language</span>
@@ -239,7 +248,7 @@ export default function Chat() {
             </button>
           </div>
 
-          {/* SAME textarea style so fonts match */}
+          {/* same textarea style so fonts match */}
           <textarea
             className="w-full border rounded p-2 min-h-[120px] bg-gray-50"
             value={reco}
@@ -249,11 +258,7 @@ export default function Chat() {
 
           <div className="flex items-center justify-between">
             <label className="text-sm text-gray-600">Your 4-week plan</label>
-            <button
-              onClick={generatePlan}
-              className={primaryBtn}
-              disabled={loading}
-            >
+            <button onClick={generatePlan} className={primaryBtn} disabled={loading}>
               {loading ? "Generating..." : "Generate"}
             </button>
           </div>
