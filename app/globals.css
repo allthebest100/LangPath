@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* custom animations from design */
+.node-animation {
+  animation: pulse 2s infinite;
+}
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
