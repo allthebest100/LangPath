@@ -2,6 +2,20 @@
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-gray-50">
+      {/* top bar link */}
+      <div className="w-full bg-white border-b">
+        <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-end">
+          <a
+            href="https://lang-path.my.canva.site/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition"
+          >
+            more detail functions in here but this not connect SEALION
+          </a>
+        </div>
+      </div>
+
       {/* hero */}
       <section className="max-w-6xl mx-auto px-4 py-12">
         <div className="grid md:grid-cols-2 gap-8 items-center">

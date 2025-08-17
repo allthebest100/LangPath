@@ -6,8 +6,6 @@ export const dynamic = "force-dynamic";
 
 const BASE_URL = process.env.MODEL_BASE_URL || "https://api.sea-lion.ai/v1";
 const MODEL_ID = process.env.MODEL_ID || "aisingapore/Llama-SEA-LION-v3-70B-IT";
-
-// Do NOT force-cast here; collect keys and narrow at runtime for both safety and typing.
 const KEY_1 = process.env.MODEL_API_KEY_1;
 const KEY_2 = process.env.MODEL_API_KEY_2;
 

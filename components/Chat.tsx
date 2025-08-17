@@ -156,7 +156,7 @@ export default function Chat() {
     <div className="max-w-6xl mx-auto">
       {/* title + selectors */}
       <div className="flex flex-col gap-3 mb-4">
-        <h1 className="text-2xl font-bold">LangPath Demo</h1>
+        <h1 className="text-2xl font-bold">SEA LION chatbot</h1>
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="text-sm text-gray-600">Language</span>
